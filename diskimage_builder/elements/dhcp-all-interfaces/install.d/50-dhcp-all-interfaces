@@ -35,6 +35,12 @@ if [ -x "/etc/NetworkManager" ]; then
     if [ "${DIB_DHCP_NETWORK_MANAGER_AUTO:-false}" == true ]; then
         # Use NetworkManager for auto configuration, it will behave just as
         # good as dhcp-all-interfaces.sh in most cases.
+
+        # Because NetworkManager can't automatically create default connection
+        # profiles for InfiniBand interfaces, we are installing
+        # NetworkManager-system-connections-infiniband.nmconnection to
+        # NetworkManager to create a wildcard InfiniBand connection profile
+        install -D -g root -o root -m 0600 ${SCRIPTDIR}/NetworkManager-system-connections-infiniband.nmconnection /etc/NetworkManager/system-connections/infiniband.nmconnection
         exit 0
     fi
 fi
